@@ -1,0 +1,9 @@
+# List of repositories to use within your workspace
+# See https://github.com/dirk-thomas/vcstool
+
+repositories:
+
+    groot:
+        type: git
+        url: https://github.com/BehaviorTree/Groot.git
+        version: master
