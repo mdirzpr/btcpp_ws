@@ -1,0 +1,26 @@
+services:
+  btcpp_ws:
+    image: btcpp_ws:main
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: btcpp_ws
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#init
+    init: true
+    # Interactive shell
+    stdin_open: true
+    tty: true
+    # Networking and IPC
+    network_mode: host
+    ipc: host
+    env_file:
+      - .env
+    environment:
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      # Mount the workshop source code
+      - ./src:/home/${WORKSPACE}/src:rw
+      # Allows graphical programs in the container.
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
