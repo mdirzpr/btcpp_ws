@@ -1,7 +1,7 @@
 # BehaviorTree.CPP workspace
 
 <p align="center">
-  <img src="./images/BTCPP.png" alt="BehaviorTree.CPP" width="25%"/>
+  <img src="./images/BTCPP_WS.png" alt="BehaviorTree.CPP" width="35%"/>
 </p>
 
 ## Overview
