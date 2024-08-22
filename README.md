@@ -14,7 +14,7 @@ BehaviorTree.CPP is an open-source library that facilitates the creation and exe
 
 ## Docker-based Development Environment
 
-This workspace includes a Docker-based environment tailored for developing with BehaviorTree.CPP. The Docker environment ensures consistency across different development setups and simplifies dependency management. By using Docker, you can avoid the complexity of setting up your local environment, and quickly start developing, testing, and running behavior trees.
+This workspace includes a Docker-based environment tailored for developing with BehaviorTree.CPP. The [Docker](https://www.docker.com/) environment ensures consistency across different development setups and simplifies dependency management. By using Docker, you can avoid the complexity of setting up your local environment, and quickly start developing, testing, and running behavior trees.
 
 
 ## Getting Started
@@ -28,7 +28,7 @@ To get started with the Docker environment, follow these steps:
 
 2. Build the Docker image using this command:
 
-    ```bash
+    ```
     cd btcpp_ws
     docker compose build
     ```
@@ -42,6 +42,7 @@ To get started with the Docker environment, follow these steps:
 * For more detailed instructions on how to work with Docker, refer to the [official Docker documentation](https://docs.docker.com/).
 
 ## Test
+
 In order to test BehaviorTree.CPP library, run these commands:
 
 ```
@@ -53,9 +54,10 @@ make
 ./pickPlace
 ```
 
-## Join the Community
+### Join the Community
 
 For discussions, updates, and networking with other BehaviorTree.CPP users, consider joining the [BehaviorTree LinkedIn Group](https://www.linkedin.com/groups/13022577/).
 
-## Developer and maintainer
-- [Mahdi Rezapour](mahdi.rezapour@smartfactory.de)
+### Developer and maintainer
+- [Mahdi Rezapour](https://github.com/mdirzpr)
+- Email: mahdi.rezapour@smartfactory.de
