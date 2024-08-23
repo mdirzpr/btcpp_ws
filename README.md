@@ -43,16 +43,15 @@ To get started with the Docker environment, follow these steps:
 
 ## Test
 
-In order to test BehaviorTree.CPP library, run these commands:
+In order to test BehaviorTree.CPP library, run this commands:
 
 ```
-cd src/BT_example/pick_place
-mkdir build
-cd build
-cmake ..
-make
-./pickPlace
+bash test.sh
 ```
+and the output will be like this:
+
+<img src="./images/output.png" alt="Output" width="25%"/>
+
 
 ### Join the Community
 
