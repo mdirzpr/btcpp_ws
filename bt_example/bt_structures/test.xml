@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ============================================================================
+     🧪 TEST TREE - Simple AlwaysSuccess for testing
+     ============================================================================
+     A minimal behavior tree that always succeeds.
+     Perfect for testing the BT infrastructure without complex logic.
+     ============================================================================ -->
+<root BTCPP_format="4" main_tree_to_execute="mainTree">
+
+    <BehaviorTree ID="mainTree">
+        <AlwaysSuccess name="TestAlwaysSuccess"/>
+    </BehaviorTree>
+
+</root>

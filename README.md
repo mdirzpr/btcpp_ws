@@ -19,38 +19,70 @@ This workspace includes a Docker-based environment tailored for developing with 
 
 ## Getting Started
 
-To get started with the Docker environment, follow these steps:
+### 1. Clone the repository
 
-1. Clone this repository:
-    ```
-    git clone https://github.com/mdirzpr/btcpp_ws.git
-    ```
+```bash
+git clone https://github.com/mdirzpr/btcpp_ws.git
+cd btcpp_ws
+```
 
-2. Build the Docker image using this command:
+### 2. (Optional) Enable Groot2 visualization
 
-    ```
-    cd btcpp_ws
-    docker compose build
-    ```
+If you want to use Groot2 for live tree visualization, run this on your **host** before starting the container:
 
-3. Start a container:
+```bash
+xhost +local:docker
+```
 
-    ```
-    docker compose run btcpp_ws
-    ```
+### 3. Build the Docker image
 
-* For more detailed instructions on how to work with Docker, refer to the [official Docker documentation](https://docs.docker.com/).
+```bash
+docker compose build
+```
+
+### 4. Start a dev container
+
+```bash
+docker compose run dev bash
+```
+
+## Build & Run `bt_example`
+
+All commands below run **inside the container**.
+
+### Build
+
+```bash
+cmake -S /dev_ws/src/bt_example -B /dev_ws/build/bt_example
+cmake --build /dev_ws/build/bt_example
+```
+
+### Run the simulation demo
+
+```bash
+/dev_ws/build/bt_example/autonomy_node_sim \
+    /dev_ws/src/bt_example/bt_structures/simulation_demo.xml
+```
+
+This runs the industrial manufacturing workflow tree (3D printing → pick-and-place → transport → QA → storage).
+
+### Visualize with Groot2
+
+While the simulation is running, launch Groot2 in a second terminal inside the container:
+
+```bash
+~/Groot2.AppImage &
+```
+
+Groot2 connects automatically on ZMQ port **1668**.
 
 ## Test
 
-In order to test BehaviorTree.CPP library, run this commands:
+To run the quick smoke-test script:
 
-```
+```bash
 bash test.sh
 ```
-and the output will be like this:
-
-<img src="./images/output.png" alt="Output" width="25%"/>
 
 
 ### Join the Community

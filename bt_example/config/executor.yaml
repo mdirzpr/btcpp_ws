@@ -1,0 +1,116 @@
+# ============================================================================
+# BT_EXAMPLE EXECUTOR CONFIGURATION
+# ============================================================================
+# This configuration file defines execution parameters for the bt_example
+# simulation-only behavior tree demos.
+#
+# Based on BT.ROS2 executor pattern from BTWorkshop_ROSCON_ES25
+# Adapted for BehaviorTree.CPP 4.x with simplified simulation nodes
+#
+# Perfect for:
+# - Learning behavior tree concepts
+# - Testing tree logic without hardware
+# - Demos and tutorials
+# ============================================================================
+
+autonomy_node_sim:
+  ros__parameters:
+    # ========================================================================
+    # EXECUTOR SETTINGS
+    # ========================================================================
+    # Core execution parameters for the simulation behavior tree
+
+    node_name: "autonomy_node_sim"  # ROS 2 node name
+    tick_frequency: 100  # Hz - How often to tick the behavior tree (default: 100 Hz)
+
+    # ========================================================================
+    # GROOT2 VISUALIZATION
+    # ========================================================================
+    # Real-time behavior tree monitoring and debugging
+
+    use_groot2: true  # Enable Groot2 publisher for live tree visualization
+    groot2_port: 1668  # ZMQ port for Groot2 connection (default: 1668)
+
+    # Note: Legacy ZMQ publisher settings (BT.CPP 3.x compatibility)
+    # zmq_pub_port: 1666  # Optional: old zmq publisher for BT4.x
+    # zmq_srv_port: 1667  # Optional: old zmq publisher for BT4.x
+
+    # ========================================================================
+    # SIMULATION MODE
+    # ========================================================================
+    # This package ONLY supports simulation (no real hardware)
+
+    simulation: true  # Always true for bt_example
+
+    # ========================================================================
+    # BEHAVIOR TREE FILES
+    # ========================================================================
+    # Default tree files (can be overridden at launch)
+
+    tree_xml_file: "simulation_demo.xml"  # Main behavior tree definition
+
+    # ========================================================================
+    # PLUGIN CONFIGURATION
+    # ========================================================================
+    # Note: This implementation uses direct node registration in C++
+    # rather than dynamic plugin loading. For future plugin support:
+
+    # plugins:
+    #   - bt_example/bt_plugins
+    #   - behaviortree_ros2/bt_plugins
+
+    # behavior_trees:
+    #   - bt_example/behavior_trees
+
+    # ros_plugins_timeout: 10000  # milliseconds
+
+    # ========================================================================
+    # ADVANCED SETTINGS
+    # ========================================================================
+
+    # Timeout for tree execution (0 = infinite)
+    execution_timeout: 0  # seconds
+
+    # Enable detailed logging
+    verbose_logging: true  # More verbose for learning/debugging
+
+    # Halt tree on node failure
+    halt_on_failure: false
+
+# ============================================================================
+# ALTERNATIVE SIMULATION CONFIGURATIONS
+# ============================================================================
+# Pre-configured setups for different demo scenarios
+
+demo_basic:
+  ros__parameters:
+    node_name: "demo_basic"
+    tick_frequency: 100
+    use_groot2: true
+    groot2_port: 1668
+    simulation: true
+    tree_xml_file: "simulation_demo.xml"
+    verbose_logging: true
+    halt_on_failure: false
+
+demo_advanced:
+  ros__parameters:
+    node_name: "demo_advanced"
+    tick_frequency: 100
+    use_groot2: true
+    groot2_port: 1668
+    simulation: true
+    tree_xml_file: "advanced_demo.xml"  # For future advanced examples
+    verbose_logging: true
+    halt_on_failure: false
+
+demo_fast:
+  ros__parameters:
+    node_name: "demo_fast"
+    tick_frequency: 200  # Faster execution for quick demos
+    use_groot2: false  # Disable Groot2 for performance
+    groot2_port: 1668
+    simulation: true
+    tree_xml_file: "simulation_demo.xml"
+    verbose_logging: false
+    halt_on_failure: false

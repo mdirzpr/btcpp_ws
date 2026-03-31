@@ -1,0 +1,58 @@
+################################################################################
+# Docker Compose - BehaviorTree.CPP Workspace
+#
+# Standalone BTCPP development environment (no ROS 2).
+#
+# Commands:
+#   Build image:        docker compose build
+#   Start dev shell:    docker compose run dev bash
+#   Run in background:  docker compose up -d dev
+#   Attach to running:  docker exec -it btcpp_dev bash
+#
+# X11 Setup (required for Groot2):
+#   xhost +local:docker   # run on HOST before starting container
+################################################################################
+
+services:
+  dev:
+    image: bt_ws:dev
+    container_name: btcpp_dev
+    hostname: btcpp-dev
+
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        USERNAME: ${DEV_USERNAME:-devuser}
+      target: dev
+
+    stdin_open: true
+    tty: true
+
+    # Host networking keeps things simple and avoids NAT for ZMQ (Groot2 port 1668)
+    network_mode: host
+    ipc: host
+
+    privileged: true
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - APPIMAGE_EXTRACT_AND_RUN=1
+
+    volumes:
+      # X11 display forwarding (for Groot2)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/home/${DEV_USERNAME:-devuser}/.Xauthority
+
+      # Source code (live editing)
+      - ./bt_example:/dev_ws/src/bt_example:rw
+
+      # Build artifacts (persistent across container restarts)
+      - ./.build/:/dev_ws/build/:rw
+
+    user: "${DEV_USERNAME:-devuser}"
+    command: sleep infinity

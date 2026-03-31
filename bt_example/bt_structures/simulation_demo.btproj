@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4" project_name="SimulationDemo">
+    <include path="simulation_demo.xml"/>
+
+    <!-- ====================================================================
+         🤖 TREE NODES MODEL - Node definitions for Groot2 visualization
+    ==================================================================== -->
+    <TreeNodesModel>
+        <!-- 🚨 Condition Nodes - Safety & Status Checks -->
+        <Condition ID="EmergencyButtonNotPressed"/>
+        <Condition ID="Printer3DReady"/>
+        <Condition ID="PrintingFinished"/>
+        <Condition ID="IsGripperOpen"/>
+        <Condition ID="IsShuttleFree"/>
+        <Condition ID="ProductInQAPosition"/>
+        <Condition ID="IsQualityOK"/>
+        <Condition ID="IsRobotHome"/>
+        <Condition ID="IsStorageFree"/>
+
+        <!-- ⚙️ Configuration Nodes - AAS Integration -->
+        <Action ID="LoadSkillsConfig">
+            <output_port name="skills_config">Loaded skills configuration from AAS</output_port>
+        </Action>
+        <Action ID="LoadRobotConfig">
+            <output_port name="robot_config">Loaded robot configuration from AAS</output_port>
+        </Action>
+
+        <!-- 🖨️ 3D Printing Nodes -->
+        <Action ID="GetGCodePath">
+            <input_port name="material_type" default="PLA">Material type (PLA, ABS, etc.)</input_port>
+            <output_port name="gcode_path">Path to G-Code file from AAS</output_port>
+        </Action>
+        <Action ID="InitiatePrinter">
+            <input_port name="gcode_path" default="/simulated/default.gcode">Path to G-Code file</input_port>
+        </Action>
+        <Action ID="StartPrinting">
+            <input_port name="gcode_path" default="/simulated/default.gcode">Path to G-Code file</input_port>
+        </Action>
+
+        <!-- 🦾 Robot Manipulation Nodes -->
+        <Action ID="MoveLinear">
+            <input_port name="target_position" default="home">Target position name</input_port>
+        </Action>
+        <Action ID="MoveRobot"/>
+        <Action ID="HomeRobot"/>
+        <Action ID="OpenCloseGripper">
+            <input_port name="command" default="open">Command: 'open' or 'close'</input_port>
+        </Action>
+        <Action ID="Grasp">
+            <input_port name="gripper_type">Type of gripper to use</input_port>
+        </Action>
+        <Action ID="SetGripperType">
+            <output_port name="gripper_type">Type of gripper to use</output_port>
+        </Action>
+        <Action ID="Release"/>
+
+        <!-- 🚃 Transport Nodes -->
+        <Action ID="TransportTo">
+            <input_port name="destination">Target destination station</input_port>
+        </Action>
+
+        <!-- 🔍 Quality Assurance Nodes -->
+        <Action ID="QualityCheck"/>
+        <Action ID="TakeImage"/>
+
+        <!-- 📦 Storage Nodes -->
+        <Action ID="StoreInStorage">
+            <input_port name="slot" default="A1">Storage slot identifier</input_port>
+        </Action>
+
+        <!-- ⚙️ Legacy Nodes -->
+        <Action ID="GetParameters"/>
+    </TreeNodesModel>
+</root>

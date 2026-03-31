@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ============================================================================
+     SIMULATION DEMO - Industrial Manufacturing Workflow
+     ============================================================================
+     Simulates: Transport -> Quality Assurance -> Storage
+     ============================================================================ -->
+<root BTCPP_format="4" main_tree_to_execute="mainTree">
+
+    <!-- ====================================================================
+         SUBTREE: TransportProduct
+         Transport product to QA station
+    ==================================================================== -->
+    <BehaviorTree ID="TransportProduct">
+        <Sequence name="TransportSequence">
+            <IsShuttleFree/>
+            <TransportTo destination="QA_station"/>
+        </Sequence>
+    </BehaviorTree>
+
+    <!-- ====================================================================
+         SUBTREE: QualityAssurance
+         Inspect the product
+    ==================================================================== -->
+    <BehaviorTree ID="QualityAssurance">
+        <Sequence name="QASequence">
+            <ProductInQAPosition/>
+            <TakeImage/>
+            <QualityCheck/>
+        </Sequence>
+    </BehaviorTree>
+
+    <!-- ====================================================================
+         SUBTREE: StoreProduct
+         Store approved product
+    ==================================================================== -->
+    <BehaviorTree ID="StoreProduct">
+        <Sequence name="StoreSequence">
+            <IsStorageFree/>
+            <TransportTo destination="storage"/>
+            <StoreInStorage slot="A1"/>
+        </Sequence>
+    </BehaviorTree>
+
+    <!-- ====================================================================
+         MAIN TREE
+    ==================================================================== -->
+    <BehaviorTree ID="mainTree">
+        <Sequence name="ManufacturingWorkflow">
+            <EmergencyButtonNotPressed/>
+            <Fallback name="QualityOrManufacture">
+                <IsQualityOK/>
+                <Sequence name="Manufacturing">
+                    <SubTree ID="TransportProduct"/>
+                    <SubTree ID="QualityAssurance"/>
+                    <SubTree ID="StoreProduct"/>
+                </Sequence>
+            </Fallback>
+        </Sequence>
+    </BehaviorTree>
+
+    <!-- ====================================================================
+         TREE NODES MODEL - metadata for Groot2
+    ==================================================================== -->
+    <TreeNodesModel>
+        <Condition ID="EmergencyButtonNotPressed"/>
+        <Condition ID="IsShuttleFree"/>
+        <Condition ID="ProductInQAPosition"/>
+        <Condition ID="IsQualityOK"/>
+        <Condition ID="IsStorageFree"/>
+
+        <Action ID="TransportTo">
+            <input_port name="destination">Target destination station</input_port>
+        </Action>
+        <Action ID="TakeImage"/>
+        <Action ID="QualityCheck"/>
+        <Action ID="StoreInStorage">
+            <input_port name="slot" default="A1">Storage slot identifier</input_port>
+        </Action>
+    </TreeNodesModel>
+
+</root>
