@@ -54,5 +54,8 @@ services:
       # Build artifacts (persistent across container restarts)
       - ./.build/:/dev_ws/build/:rw
 
+      # Test script (available inside container as /dev_ws/test.sh)
+      - ./test.sh:/dev_ws/test.sh:ro
+
     user: "${DEV_USERNAME:-devuser}"
     command: sleep infinity

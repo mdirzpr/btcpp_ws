@@ -14,8 +14,9 @@ BehaviorTree.CPP is an open-source library that facilitates the creation and exe
 
 ## Docker-based Development Environment
 
-This workspace includes a Docker-based environment tailored for developing with BehaviorTree.CPP. The [Docker](https://www.docker.com/) environment ensures consistency across different development setups and simplifies dependency management. By using Docker, you can avoid the complexity of setting up your local environment, and quickly start developing, testing, and running behavior trees.
+This workspace includes a Docker-based environment tailored for developing with BehaviorTree.CPP. The [Docker](https://www.docker.com/) environment ensures consistency across different development setups and simplifies dependency management.
 
+---
 
 ## Getting Started
 
@@ -28,7 +29,7 @@ cd btcpp_ws
 
 ### 2. (Optional) Enable Groot2 visualization
 
-If you want to use Groot2 for live tree visualization, run this on your **host** before starting the container:
+Run this on your **host** before starting the container — it allows the container to open windows on your display:
 
 ```bash
 xhost +local:docker
@@ -46,6 +47,8 @@ docker compose build
 docker compose run dev bash
 ```
 
+---
+
 ## Build & Run `bt_example`
 
 All commands below run **inside the container**.
@@ -53,22 +56,23 @@ All commands below run **inside the container**.
 ### Build
 
 ```bash
-cmake -S /dev_ws/src/bt_example -B /dev_ws/build/bt_example
-cmake --build /dev_ws/build/bt_example
+cmake -S /dev_ws/src/bt_example -B /dev_ws/build/bt_example -DCMAKE_BUILD_TYPE=Release
+cmake --build /dev_ws/build/bt_example -- -j$(nproc)
 ```
 
-### Run the simulation demo
+### Run the simulation
 
 ```bash
 /dev_ws/build/bt_example/autonomy_node_sim \
     /dev_ws/src/bt_example/bt_structures/simulation_demo.xml
 ```
 
-This runs the industrial manufacturing workflow tree (3D printing → pick-and-place → transport → QA → storage).
+This runs the industrial manufacturing workflow:
+**Transport → Quality Assurance → Storage**
 
 ### Visualize with Groot2
 
-While the simulation is running, launch Groot2 in a second terminal inside the container:
+While the simulation is running, open a second terminal in the container and launch Groot2:
 
 ```bash
 ~/Groot2.AppImage &
@@ -76,14 +80,56 @@ While the simulation is running, launch Groot2 in a second terminal inside the c
 
 Groot2 connects automatically on ZMQ port **1668**.
 
-## Test
+> **Note:** If Groot2 fails with `libOpenGL.so.0: cannot open shared object file`, install the missing library:
+> ```bash
+> sudo apt-get install -y libopengl0
+> ```
+> This is only needed once per container session. The next `docker compose build` will include it automatically.
 
-To run the quick smoke-test script:
+---
+
+## Quick Test (build + Groot2 + run in one command)
+
+From inside the container, run:
 
 ```bash
-bash test.sh
+bash /dev_ws/test.sh
 ```
 
+Or from the **host** workspace root:
+
+```bash
+docker compose run dev bash /dev_ws/test.sh
+```
+
+`test.sh` will:
+1. Build `bt_example`
+2. Launch Groot2 in the background (if available)
+3. Run the simulation
+4. Shut down Groot2 when the simulation exits
+
+---
+
+## Project Structure
+
+```
+btcpp_ws/
+├── bt_example/
+│   ├── include/action_nodes.h       # All custom BT node declarations
+│   ├── src/
+│   │   ├── action_nodes.cpp         # Node implementations
+│   │   └── autonomy_node_sim.cpp    # main() — registers nodes, loads tree, ticks
+│   ├── bt_structures/
+│   │   ├── simulation_demo.xml      # Main manufacturing workflow tree
+│   │   └── test.xml                 # Minimal smoke-test tree (AlwaysSuccess)
+│   └── CMakeLists.txt
+├── docker/
+│   └── Dockerfile
+├── docker-compose.yaml
+└── test.sh                          # One-shot build + Groot2 + run script
+```
+
+---
 
 ### Join the Community
 

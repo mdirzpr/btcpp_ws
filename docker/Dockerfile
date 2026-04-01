@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # GUI libraries (for Groot2)
     libcanberra-gtk-module libcanberra-gtk3-module \
     libqt5svg5-dev \
+    libopengl0 \
     # ZMQ (required by BehaviorTree.CPP Groot2 publisher)
     libzmq5 libzmq3-dev \
     # BehaviorTree.CPP dependencies
